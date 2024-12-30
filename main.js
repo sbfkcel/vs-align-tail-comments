@@ -67,13 +67,6 @@ function activate(context) {
         
         let isInScriptTag = false;
         let isInStyleTag = false;
-        try {
-            
-            vscode.window.showErrorMessage(`Unsupported language1: ${document.languageId}`);
-        } catch (error) {
-            vscode.window.showErrorMessage(`Unsupported language2: ${error.message}`);
-            
-        }
         editor.edit(editBuilder => {
             for (let i = 0; i < document.lineCount; i++) {
                 const line = document.lineAt(i);
