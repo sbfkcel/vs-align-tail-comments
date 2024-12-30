@@ -2,14 +2,14 @@
   "name": "align-tail-comments",
   "displayName": "Align Tail Comments",
   "description": "Align comments after each line of code to the ruler.",
-  "publisher":"sbfkcel",
+  "publisher":"sbfkcel-align-tail-comments",
   "icon": "images/icon.png",
   "author": {
     "name": "sbfkcel",
     "email": "97cool@gmial.com",
     "url": "https://www.vvadd.com"
   },
-  "version": "0.1.0",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.0.0"
   },
