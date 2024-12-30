@@ -1,0 +1,49 @@
+{
+  "name": "align-tail-comments",
+  "displayName": "Align Tail Comments",
+  "description": "Align comments after each line of code to the ruler.",
+  "publisher":"sbfkcel",
+  "icon": "./images/icon.png",
+  "author": {
+    "name": "sbfkcel",
+    "email": "97cool@gmial.com",
+    "url": "https://www.vvadd.com"
+  },
+  "version": "0.0.4",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./main.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.alignTailComments",
+        "title": "Align Tail Comments"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.0.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "vsce": "^2.15.0"
+  },
+  "homepage": "https://github.com/sbfkcel/vs-align-tail-comments#readme",
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/sbfkcel/vs-align-tail-comments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sbfkcel/vs-align-tail-comments/issues",
+    "email": "97cool@gmial.com"
+  },
+  "license":"MIT"
+}
