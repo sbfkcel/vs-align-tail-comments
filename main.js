@@ -1,5 +1,54 @@
 const vscode = require('vscode');
 
+function getLanguageForLine(lineText, documentLanguageId, isInScriptTag, isInStyleTag) {
+    if(isInScriptTag){
+        return 'javascript';
+    };
+    if(isInStyleTag){
+        return 'css';
+    };
+    return documentLanguageId;
+};
+function getcommentSymbols(languageId){
+    switch (languageId) {
+        case 'javascript':
+        case 'javascriptreact':
+        case 'typescript':
+        case 'typescriptreact':
+        case 'java':
+        case 'c':
+        case 'cpp':
+        case 'rust':
+        case 'csharp':
+        case 'go':
+        case 'sass':
+        case 'scss':
+            return ['//', '/*'];
+        break;
+        case 'python':
+        case 'ruby':
+        case 'shellscript':
+        case 'shell':
+        case 'conf':
+            return ['#'];
+        break;
+        case 'html':
+        case 'xml':
+            return ['<!--'];
+        break;
+        case 'lua':
+            return ['--'];
+        break;
+        case 'css':
+            return ['/*'];
+        break;
+        default:
+            vscode.window.showInformationMessage(`Unsupported language: ${languageId}`);
+        break;
+    };
+    return ['//','/*'];
+};
+
 function activate(context) {
     let disposable = vscode.commands.registerCommand('extension.alignTailComments', function () {
         const editor = vscode.window.activeTextEditor;
@@ -13,72 +62,39 @@ function activate(context) {
         const config = vscode.workspace.getConfiguration('editor', document.uri);
         const maxColumn = config.get('rulers', [100])[0] || 100;									// 默认值为100
 
-        // 根据文件类型设置注释符号
-        const languageId = document.languageId;
-        let commentSymbol = '//';																	// 默认
-
-        switch (languageId) {
-            case 'javascript':
-            case 'javascriptreact':
-            case 'typescript':
-            case 'typescriptreact':
-            case 'java':
-            case 'c':
-            case 'cpp':
-            case 'rust':
-            case 'csharp':
-            case 'go':
-                commentSymbol = '//';
-			break;
-			case 'python':
-			case 'ruby':
-			case 'shellscript':
-			case 'shell':
-			case 'conf':
-                commentSymbol = '#';
-			break;
-            case 'html':
-            case 'xml':
-                commentSymbol = '<!--';
-            break;
-            case 'lua':
-                commentSymbol = '--';
-            break;
-			case 'css':
-			case 'sass':
-				commentSymbol = '/*';
-			break;
-            // 可以根据需要添加更多语言
-            default:
-                vscode.window.showInformationMessage(`Unsupported language: ${languageId}`);
-			return;
-        }
-
+        let isInScriptTag = false;
+        let isInStyleTag = false;
         editor.edit(editBuilder => {
             for (let i = 0; i < document.lineCount; i++) {
                 const line = document.lineAt(i);
                 const text = line.text;
 
+                // 检测<script>和<style>标签
+                if (text.match(/<script\b[^>]*>/i)) {
+                    isInScriptTag = true;
+                }
+                if (text.match(/<style\b[^>]*>/i)) {
+                    isInStyleTag = true;
+                }
+                if (text.match(/<\/script>/i)) {
+                    isInScriptTag = false;
+                }
+                if (text.match(/<\/style>/i)) {
+                    isInStyleTag = false;
+                }
+
+                const languageId = getLanguageForLine(text,document.languageId,isInScriptTag,isInStyleTag);
+                const commentSymbols = getcommentSymbols(languageId);
+
                 // 检查字符串并忽略其中的注释符号
-                let inString = false;
                 let stringChar = '';
                 let commentIndex = -1;
 
-                for (let j = 0; j < text.length; j++) {
-                    const char = text[j];
-
-                    if (inString) {
-                        if (char === stringChar && text[j - 1] !== '\\') {
-                            inString = false;
-                        }
-                    } else {
-                        if (char === '"' || char === '\'') {
-                            inString = true;
-                            stringChar = char;
-                        } else if (text.substr(j).startsWith(commentSymbol)) {
-                            commentIndex = j;
-                            break;
-                        }
+                for (const symbol of commentSymbols) {
+                    const index = text.indexOf(symbol);
+                    if (index !== -1 && (commentIndex === -1 || index < commentIndex)) {
+                        commentIndex = index;
+                        stringChar = symbol;
                     }
                 }
 
