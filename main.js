@@ -61,7 +61,9 @@ function activate(context) {
         
         // 从 VS Code 设置中获取 maxColumn 值
         const config = vscode.workspace.getConfiguration('editor', document.uri);
-        const maxColumn = config.get('rulers', [100])[0] || 100;									// 默认值为100
+        const cfg = vscode.workspace.getConfiguration('alignTailComments');
+        const defaultRuler = cfg.get('defaultRuler', 100);
+        const maxColumn = config.get('rulers', [100])[0] || defaultRuler;				            // 默认值为100
         
         let isInScriptTag = false;
         let isInStyleTag = false;

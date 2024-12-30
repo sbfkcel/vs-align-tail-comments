@@ -9,7 +9,7 @@
     "email": "97cool@gmial.com",
     "url": "https://www.vvadd.com"
   },
-  "version": "0.1.5",
+  "version": "0.1.6",
   "engines": {
     "vscode": "^1.0.0"
   },
@@ -24,7 +24,18 @@
         "command": "extension.alignTailComments",
         "title": "Align Tail Comments"
       }
-    ]
+    ],
+    "configuration":{
+      "type": "object",
+      "title": "Align Tail Comments",
+      "properties": {
+        "alignTailComments.defaultRuler": {
+          "type": "number",
+          "default": 100,
+          "description": "Column for aligning comments."
+        }
+      }
+    }
   },
   "scripts": {
     "build": "vsce package"
