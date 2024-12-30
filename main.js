@@ -32,6 +32,7 @@ function getcommentSymbols(languageId){
         case 'conf':
             return ['#'];
         break;
+        case 'vue':
         case 'html':
         case 'xml':
             return ['<!--'];
@@ -55,15 +56,22 @@ function activate(context) {
         if (!editor) {
             return;
         }
-
+        
         const document = editor.document;
-
+        
         // 从 VS Code 设置中获取 maxColumn 值
         const config = vscode.workspace.getConfiguration('editor', document.uri);
         const maxColumn = config.get('rulers', [100])[0] || 100;									// 默认值为100
-
+        
         let isInScriptTag = false;
         let isInStyleTag = false;
+        try {
+            
+            vscode.window.showErrorMessage(`Unsupported language1: ${document.languageId}`);
+        } catch (error) {
+            vscode.window.showErrorMessage(`Unsupported language2: ${error.message}`);
+            
+        }
         editor.edit(editBuilder => {
             for (let i = 0; i < document.lineCount; i++) {
                 const line = document.lineAt(i);
