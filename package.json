@@ -3,13 +3,13 @@
   "displayName": "Align Tail Comments",
   "description": "Align comments after each line of code to the ruler.",
   "publisher":"sbfkcel",
-  "icon": "./images/icon.png",
+  "icon": "images/icon.png",
   "author": {
     "name": "sbfkcel",
     "email": "97cool@gmial.com",
     "url": "https://www.vvadd.com"
   },
-  "version": "0.0.4",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.0.0"
   },
