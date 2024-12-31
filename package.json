@@ -4,17 +4,26 @@
   "description": "Align comments after each line of code to the ruler.",
   "publisher":"sbfkcel-align-tail-comments",
   "icon": "images/icon.png",
+  "galleryBanner":{
+    "color": "#ea339f",
+    "theme": "dark"
+  },
   "author": {
     "name": "sbfkcel",
     "email": "97cool@gmial.com",
     "url": "https://www.vvadd.com"
   },
-  "version": "0.1.8",
+  "version": "0.1.9",
   "engines": {
     "vscode": "^1.0.0"
   },
   "categories": [
-    "Other"
+    "Formatters","Other"
+  ],
+  "keywords": [
+    "align",
+    "commands align",
+    "beautiful"
   ],
   "activationEvents": [],
   "main": "./main.js",
