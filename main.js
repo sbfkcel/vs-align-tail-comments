@@ -86,18 +86,36 @@ function activate(context) {
                     isInStyleTag = false;
                 }
 
-                const languageId = getLanguageForLine(text,document.languageId,isInScriptTag,isInStyleTag);
+                const languageId = getLanguageForLine(text, document.languageId, isInScriptTag, isInStyleTag);
                 const commentSymbols = getcommentSymbols(languageId);
 
                 // 检查字符串并忽略其中的注释符号
+                let inString = false;
                 let stringChar = '';
                 let commentIndex = -1;
 
-                for (const symbol of commentSymbols) {
-                    const index = text.indexOf(symbol);
-                    if (index !== -1 && (commentIndex === -1 || index < commentIndex)) {
-                        commentIndex = index;
-                        stringChar = symbol;
+                for (let j = 0; j < text.length; j++) {
+                    const char = text[j];
+                    if (inString) {
+                        if (char === stringChar && text[j - 1] !== '\\') {
+                            inString = false;
+                            stringChar = '';
+                        }
+                    } else {
+                        if (char === '"' || char === "'" || char === '`') {
+                            inString = true;
+                            stringChar = char;
+                        } else {
+                            for (const symbol of commentSymbols) {
+                                if (text.startsWith(symbol, j)) {
+                                    commentIndex = j;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (commentIndex !== -1) {
+                        break;
                     }
                 }
 
